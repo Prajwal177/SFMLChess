@@ -8,8 +8,6 @@ class Position
 public:
 	Position(sf::RectangleShape chessPieces[32], sf::Vector2f tileRect);
 
-	Position(Vector2f(), sf::RectangleShape chessPieces[32]);
-
 	void listenInput(sf::RenderWindow* window);
 
 	void highlightMove();
