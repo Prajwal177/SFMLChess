@@ -6,12 +6,13 @@ chesspieces::chesspieces(sf::Texture *texture, sf::Vector2f imgCount, sf::Vector
 	this->boardSize = boardSize;
     this->texture = texture;
     this->imgSelect = 0;
+    this->isPawn = true;
     
 }
 
 sf::RectangleShape chesspieces::addPieces(int bRow, int bCol, int row)
 {
-    float itemWidth = boardSize.x / 10, itemHeight = boardSize.y / 8;
+    itemWidth = boardSize.x / 10, itemHeight = boardSize.y / 8;
 
     sf::RectangleShape chessItem(sf::Vector2f(itemWidth, itemHeight));
     chessItem.setOrigin(itemWidth / 2, itemHeight / 2);
@@ -22,7 +23,6 @@ sf::RectangleShape chesspieces::addPieces(int bRow, int bCol, int row)
     sf::Vector2u itemTextureSize = texture->getSize();
     itemTextureSize.x /= (int)imgCount.x;
     itemTextureSize.y /= (int)imgCount.y;
-
     isPawn = 0;
     //since our image file have pieces in random order, manually setting value using switch case
     if (bRow == 1 || bRow == 6)

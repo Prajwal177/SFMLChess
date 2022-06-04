@@ -13,6 +13,7 @@ public:
 
 public:
 	sf::Texture* texture;
+	float itemWidth, itemHeight;
 
 private:
 	sf::Vector2f imgCount;
