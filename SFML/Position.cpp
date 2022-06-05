@@ -10,14 +10,23 @@ Position::Position(sf::RectangleShape chessPieces[32],sf::Vector2f tileRect) {
 
 }
 
-sf::RectangleShape Position::highlightMove(sf::RenderWindow* window, bool isClick)
+sf::RectangleShape Position::highlightMove(sf::RenderWindow* window, bool isClick, int pieceNo)
 {
 	this->isClick = isClick;
 	if (isClick) {
-		this->blueBox.setSize(sf::Vector2f(this->tileWidth, (this->tileHeight) * 2));
+		
+		chessPos.x = (chessItems[pieceNo].getPosition()).x;
+		chessPos.y = (chessItems[pieceNo].getPosition()).y;
 
-		chessPos.x = (chessItems[8].getPosition()).x;
-		chessPos.y = (chessItems[8].getPosition()).y;
+		if (pieceNo > 7 && pieceNo < 16) {
+			this->blueBox.setSize(sf::Vector2f(this->tileWidth, (this->tileHeight) * 3));
+		}
+		if (pieceNo > 15 && pieceNo < 24)
+		{
+			this->blueBox.setSize(sf::Vector2f(this->tileWidth, -(this->tileHeight) * 3));
+			chessPos.y += tileHeight;
+		}
+
 		blueBox.setOrigin(sf::Vector2f(tileWidth / 2, tileHeight / 2));
 		blueBox.setPosition(sf::Vector2f(chessPos.x, chessPos.y));
 		blueBox.setFillColor(sf::Color(3, 227, 252, 120));

@@ -63,14 +63,19 @@ int main()
         }
     }
 
-    std::cout << allpieces[8].getPosition().x<<","<<allpieces[8].getPosition().y;
-    Position pos1(allpieces,sf::Vector2f(screenWidth/8, screenHeight/8));
+    Position pos(allpieces,sf::Vector2f(screenWidth/8, screenHeight/8));
+    
 
 
     //For toggling mouse clicks on next move highlighter
     static bool isClicked = false;
     sf::Vector2i mousePos;
     sf::Vector2f translatedMPos;
+
+    sf::RectangleShape hintMove; //getting highlighted square to draw on the window
+
+
+    int slowDetect = 0;
     
 
     while (window.isOpen())
@@ -89,19 +94,31 @@ int main()
                     break;
             }
         }
+        //slowing the mouse click get input time
+        
 
         //Update
         mousePos = sf::Mouse::getPosition(window);
         translatedMPos = window.mapPixelToCoords(mousePos);
-        if (allpieces[8].getGlobalBounds().contains(translatedMPos) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            if (isClicked)
-            {
-                isClicked = false;
+        for (int i = 0; i < 32; i++)
+        {
+            if (i > 7 && i < 24) { //for pawns hint move
+                if (allpieces[i].getGlobalBounds().contains(translatedMPos)) {
+                    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && (slowDetect == 0)) {
+                        isClicked = !isClicked;
+                        hintMove = pos.highlightMove(&window, isClicked, i);
+                    }
+                }
             }
-            else
-            {
-                isClicked = true;
-            }
+                
+        }
+
+        
+
+        slowDetect++;
+        if (slowDetect == 25)
+        {
+            slowDetect = 0;
         }
 
         //Draw game
@@ -110,12 +127,12 @@ int main()
 
         window.draw(board);
 
-        window.draw(pos1.highlightMove(&window, isClicked));
+        window.draw(hintMove);
 
         //adding chesspieces to the board
 
         for (int i = 0; i < pieceCount; i++)
-        {
+        {      
             window.draw(allpieces[i]);
         }
 
