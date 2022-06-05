@@ -8,21 +8,19 @@ class Position
 public:
 	Position(sf::RectangleShape chessPieces[32], sf::Vector2f tileRect);
 
-	Position(Vector2f(), sf::RectangleShape chessPieces[32]);
+	sf::RectangleShape highlightMove(sf::RenderWindow* window, bool);
 
-	void listenInput(sf::RenderWindow* window);
-
-	void highlightMove();
 
 public:
 	sf::RectangleShape blueBox;
 
+	sf::RenderWindow window1;
 
 private:
 	float tileWidth, tileHeight;
-	sf::Vector2i mousePos;
-	sf::Vector2f translatedMPos;
+	
 	sf::RectangleShape chessItems[32];
 	sf::Vector2f chessPos;//position at top left of rectangle box containing chess piece
+	bool isClick; //for toggling highlighter and getting if from the main whether mouse is clicked or not
 };
 

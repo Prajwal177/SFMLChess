@@ -6,29 +6,30 @@ Position::Position(sf::RectangleShape chessPieces[32],sf::Vector2f tileRect) {
 	for (int i = 0; i < 32; i++) {
 		chessItems[i] = chessPieces[i];
 	}
-	this->blueBox.setSize(sf::Vector2f(this->tileWidth, this->tileHeight));
-	blueBox.setFillColor(sf::Color(3, 227, 252, 170));
+	isClick = false;
 
 }
 
-void Position::listenInput(sf::RenderWindow* window)
+sf::RectangleShape Position::highlightMove(sf::RenderWindow* window, bool isClick)
 {
-	mousePos = sf::Mouse::getPosition(*window);
-	translatedMPos = window->mapPixelToCoords(mousePos);
-	if (chessItems[8].getGlobalBounds().contains(translatedMPos) && sf::Mouse::isButtonPressed
-		&& sf::Mouse::Left)
-	{
-		chessPos.x = (chessItems[8].getPosition()).x - (tileWidth/2);
-		chessPos.y = (chessItems[8].getPosition()).y - (tileHeight / 2);
-		blueBox.setPosition(chessPos + sf::Vector2f(0,tileHeight));
+	this->isClick = isClick;
+	if (isClick) {
+		this->blueBox.setSize(sf::Vector2f(this->tileWidth, (this->tileHeight) * 2));
+
+		chessPos.x = (chessItems[8].getPosition()).x;
+		chessPos.y = (chessItems[8].getPosition()).y;
+		blueBox.setOrigin(sf::Vector2f(tileWidth / 2, tileHeight / 2));
+		blueBox.setPosition(sf::Vector2f(chessPos.x, chessPos.y));
+		blueBox.setFillColor(sf::Color(3, 227, 252, 120));
 	}
-}
+	else
+	{
+		blueBox.setSize(sf::Vector2f(0.f, 0.f));
+		blueBox.setFillColor(sf::Color::Transparent);
+	}
 
-void Position::highlightMove()
-{
-	sf::RenderWindow window1;
-
-	window1.clear();
-	window1.draw(blueBox);
+	return blueBox;
 	
 }
+
+

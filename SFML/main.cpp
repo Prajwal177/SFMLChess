@@ -39,7 +39,7 @@ int main()
     for (int boardRow = 0; boardRow < 8; boardRow++) {
         for (int boardCol = 0; boardCol < 8; boardCol++) {
 
-            std::cout << pieceCount;
+            
 
             flag = 0;
             if (boardRow == 0 || boardRow == 1)
@@ -62,7 +62,15 @@ int main()
             }
         }
     }
-    Position pos1(allpieces[],sf::Vector2f(pcs.itemWidth, pcs.itemHeight));
+
+    std::cout << allpieces[8].getPosition().x<<","<<allpieces[8].getPosition().y;
+    Position pos1(allpieces,sf::Vector2f(screenWidth/8, screenHeight/8));
+
+
+    //For toggling mouse clicks on next move highlighter
+    static bool isClicked = false;
+    sf::Vector2i mousePos;
+    sf::Vector2f translatedMPos;
     
 
     while (window.isOpen())
@@ -83,7 +91,18 @@ int main()
         }
 
         //Update
-        
+        mousePos = sf::Mouse::getPosition(window);
+        translatedMPos = window.mapPixelToCoords(mousePos);
+        if (allpieces[8].getGlobalBounds().contains(translatedMPos) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            if (isClicked)
+            {
+                isClicked = false;
+            }
+            else
+            {
+                isClicked = true;
+            }
+        }
 
         //Draw game
         window.clear(sf::Color::Black); //clearing frames
@@ -91,13 +110,17 @@ int main()
 
         window.draw(board);
 
+        window.draw(pos1.highlightMove(&window, isClicked));
+
         //adding chesspieces to the board
 
         for (int i = 0; i < pieceCount; i++)
         {
             window.draw(allpieces[i]);
         }
+
         
+
         //Render
         
         window.display();
