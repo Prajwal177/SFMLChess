@@ -65,14 +65,13 @@ int main()
 
     Position pos(allpieces,sf::Vector2f(screenWidth/8, screenHeight/8));
     
-
+    sf::RectangleShape* hintBox;
 
     //For toggling mouse clicks on next move highlighter
     static bool isClicked = false;
     sf::Vector2i mousePos;
     sf::Vector2f translatedMPos;
 
-    sf::RectangleShape hintMove; //getting highlighted square to draw on the window
 
 
     int slowDetect = 0;
@@ -106,13 +105,14 @@ int main()
                 if (allpieces[i].getGlobalBounds().contains(translatedMPos)) {
                     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && (slowDetect == 0)) {
                         isClicked = !isClicked;
-                        hintMove = pos.highlightMove(&window, isClicked, i);
+                        pos.highlightMove(isClicked, i);
+                        
+                        
                     }
                 }
-            }
-                
+            }    
         }
-
+        hintBox = pos.blueBox;
         
 
         slowDetect++;
@@ -126,13 +126,22 @@ int main()
 
 
         window.draw(board);
+        if (isClicked)
+        {
+            for (int i = 0; i < 32; i++)
+            {
+                window.draw(hintBox[i]);
+            }
 
-        window.draw(hintMove);
+        }
 
+
+        
         //adding chesspieces to the board
 
         for (int i = 0; i < pieceCount; i++)
-        {      
+        {
+
             window.draw(allpieces[i]);
         }
 
