@@ -8,29 +8,37 @@ Position::Position(sf::RectangleShape chessPieces[32],sf::Vector2f tileRect) {
 	}
 	isClick = false;
 	possibleMoves = 1;
-
+	chessNo = 0;
 }
 
+enum {
+	pawn = 1, horse
+};
 
-void Position::highlightMove(bool isClick, int pieceNo)
+void Position::highlightMove(bool isClick, int pieceNo, int color)
 {
 	this->isClick = isClick;
 	if (isClick) {
-		
+		blueBox = new sf::RectangleShape[32];
+
 		chessPos.x = (chessItems[pieceNo].getPosition()).x;
 		chessPos.y = (chessItems[pieceNo].getPosition()).y;
 
+		if (pieceNo == 1 || pieceNo == 6 || pieceNo == 25 || pieceNo == 30) {
+			chessNo = horse;
 
-		if (pieceNo > 7 && pieceNo < 16) {
-			posVertical = 1;
-			posHorizon = 0;
-
+			posVertical = (color == 1 ? -2 : 2);
+			posHorizon = 1;
 			possibleMoves = 3;
 		}
-		if (pieceNo > 15 && pieceNo < 24)
-		{
-			posVertical = -1;
+
+		if (pieceNo > 7 && pieceNo < 24) {
+			chessNo = pawn;
+			
+			posVertical = (color == 1 ? -1:1);
 			posHorizon = 0;
+			
+	
 			possibleMoves = 3;
 		}
 		movedUp = 0, movedRight = 0;
@@ -39,15 +47,31 @@ void Position::highlightMove(bool isClick, int pieceNo)
 			
 			this->blueBox[i].setSize(sf::Vector2f(this->tileWidth, this->tileHeight));
 			blueBox[i].setOrigin(sf::Vector2f(tileWidth / 2, tileHeight / 2));
-			blueBox[i].setPosition(sf::Vector2f(chessPos.x + (tileWidth * movedRight), chessPos.y + (tileHeight * movedUp)));
+			blueBox[i].setPosition(sf::Vector2f(chessPos.x + (tileWidth * movedRight), 
+				chessPos.y + (tileHeight * movedUp)));
 			blueBox[i].setFillColor(sf::Color(3, 227, 252, 120));
-			movedRight += posHorizon;
-			movedUp += posVertical;
+			switch (chessNo)
+			{
+			case pawn:
+				movedRight += posHorizon;
+				movedUp += posVertical;
+				break;
+
+			case horse:
+				movedRight += (i % 2 == 0 ? posHorizon : ( - 2 * posHorizon));
+				movedUp += (i % 2 == 0 ? posVertical : 0);
+				break;
+			default:
+				break;
+			}
 
 		}
 		
 	}
+	else
+	{
+		delete[] blueBox;
+	}
 }
-
 
 

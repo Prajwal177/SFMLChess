@@ -38,9 +38,6 @@ int main()
     int pieceCount = 0; //counts all the pieces starting from zero
     for (int boardRow = 0; boardRow < 8; boardRow++) {
         for (int boardCol = 0; boardCol < 8; boardCol++) {
-
-            
-
             flag = 0;
             if (boardRow == 0 || boardRow == 1)
             {
@@ -101,14 +98,10 @@ int main()
         translatedMPos = window.mapPixelToCoords(mousePos);
         for (int i = 0; i < 32; i++)
         {
-            if (i > 7 && i < 24) { //for pawns hint move
-                if (allpieces[i].getGlobalBounds().contains(translatedMPos)) {
-                    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && (slowDetect == 0)) {
-                        isClicked = !isClicked;
-                        pos.highlightMove(isClicked, i);
-                        
-                        
-                    }
+            if (allpieces[i].getGlobalBounds().contains(translatedMPos)) {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && (slowDetect == 0)) {
+                    isClicked = !isClicked;
+                    pos.highlightMove(isClicked, i, (i < 16? 0:1));                     
                 }
             }    
         }
